@@ -20,16 +20,25 @@
 ## Sintaxe da Linguagem na Forma de Tutorial
 
 > Formato: 
+
 > pontos: letras maiúsculas, números ou "_'
+
 > arestas: PONTO1>PONTO2 (aresta unidirecional) ou PONTO1<>PONTO2 (aresta bidirecional)
 
 > Palavras reservadas:
+
 > define: declara N pontos ou arestas divididos por espaços.
+
 > remove: apaga N pontos ou arestas divididos por espaços.
+
 > path: recebe como parâmetro pontos ou arestas e verifica se existe uma caminho que passa pelos elementos recebidos.
+
 > cycle: retorna quantos ciclos existem no grafo.
+
 > conncted: retorna True se o grafo for conexo e False se não for.
+
 > graph: printa o grafo.
+
 > matrix: printa o grafo na forma de matriz.
 
 
