@@ -15,7 +15,7 @@
 
 ## Slides
 
-> Coloque aqui o link para o PDF da apresentação.
+> [Link para a apresentação (PDF).](https://drive.google.com/file/d/1SFINYwWnTV1X1fZ4e3IoRCUgkoGGQLRK/view?usp=sharing)
 
 ## Sintaxe da Linguagem na Forma de Tutorial
 
