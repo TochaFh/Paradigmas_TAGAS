@@ -21,7 +21,7 @@
 
 > Formato: 
 
-pontos: letras maiúsculas, números ou "_'
+pontos: letras maiúsculas, dígitos ou "_"
 
 arestas: PONTO1>PONTO2 (aresta unidirecional) ou PONTO1<>PONTO2 (aresta bidirecional)
 
