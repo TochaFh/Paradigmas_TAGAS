@@ -1,14 +1,3 @@
-# Template da Entrega Parcial
-
-Segue abaixo o modelo de como deve ser apresentado e documentado o projeto. Há partes do modelo a seguir que têm uma marcação específica indicando que **não devem ser literalmente transcritas**:
-
-Trecho entre `<...>` representa algo que deve ser substituído pelo indicado. Nesse caso, você não deve manter os símbolos `<...>`.
-> Parágrafos que aparecem neste modo de citação representa algo que deve ser substituído pelo explicado.
-
-No modelo a seguir são colocados exemplos ilustrativos, que serão substituídos pelos do seu projeto.
-
-> # Modelo para Apresentação da Entrega Parcial do Projeto (Arquivo README.md)
-
 # DSL `<Título>`
 
 ## Descrição Resumida da DSL
