@@ -2,13 +2,10 @@
 Total Análise de Grafos AS
 Trabalhando na Análise de Grafos Altamente Sociáveis
 
-# Projeto `<Título do Projeto>`
-# Project `<Title in English>`
+# Projeto `TAGAS`
+# Project `TAGAS`
 
-> Incluir nome e RA de cada membro do grupo.
-> |Nome  | RA |
-> |--|--|
-> | Nome1  | 123456  |
-> | Nome2  | 123456  |
-> | Nome3  | 123456  |
-> | Nome4  | 123456  |
+> | Arthur Valvezon | 240101 |
+> | Mateus Pereira de Oliveira | 243413 |
+> | Rafael Campideli Hoyos | 175100 |
+> | Thiago Augusto de Tulio Nascimento | 252937  |
