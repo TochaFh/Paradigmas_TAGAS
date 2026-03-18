@@ -1,6 +1,9 @@
 # Paradigmas_TAGAS
->Total Análise de Grafos AS
->Trabalhando em Algo sobre Grafo Arbitrariamente Sem noção
+Total Análise de Grafos AS
+
+Trabalhando em Algo sobre Grafo Arbitrariamente Sem noção
+
+Trabalhando em Algo sobre Grafos Altamente Sensacional
 
 # Projeto `TAGAS`
 # Project `TAGAS`
