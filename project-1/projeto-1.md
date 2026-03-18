@@ -2,13 +2,13 @@
 
 ## Descrição Resumida da DSL
 
-> Descrição resumida do tema do projeto.
+> O projeto TAGAS visa a criação de uma DSL capaz de gerar/editar grafos e rodas algoritmos sobre eles de maneira prática e interativa.
 
 > Contextualização da linguagem:
 >   Grafos
 
 > Motivação:
->   A motivação da nossa linguagem é facilitar o trabalho e a representação de grafos.
+>   A motivação da nossa linguagem é facilitar o trabalho e a representação de grafos no ponto de vista educativo.
 
 > Relevância:
 >   Grafos são de grande importância em diversos contextos da computação, por issom vimos a necessidade de simplificar tarefas envolvendo essa estrutura de dados.
@@ -95,5 +95,6 @@ matrix
 
 # Referências Bibliográficas
 
->Thomas H. Cormen, Charles E. Leiserson, Ronald L. Rivest, and Cliﬀord Stein. Introduction to Algorithms. MIT Press, 4th edition, 2022.
+Thomas H. Cormen, Charles E. Leiserson, Ronald L. Rivest, and Cliﬀord Stein. Introduction to Algorithms. MIT Press, 4th edition, 2022.
 
+SANTOS, Rodrigo Pereira dos; COSTA, Heitor Augustus Xavier. Um software gráfico educacional para o ensino de algoritmos em grafos. Lavras: UFLA, 2006.
