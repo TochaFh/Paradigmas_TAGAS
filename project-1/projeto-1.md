@@ -19,13 +19,15 @@
 
 ## Sintaxe da Linguagem na Forma de Tutorial
 
-> Formato: 
+**Formato:** 
 
 pontos: letras maiúsculas, dígitos ou "_"
 
 arestas: PONTO1>PONTO2 (aresta unidirecional) ou PONTO1<>PONTO2 (aresta bidirecional)
 
-> Palavras reservadas:
+<br />
+
+**Palavras reservadas:**
 
 define: declara N pontos ou arestas divididos por espaços.
 
@@ -59,7 +61,9 @@ S::= matrix | graph | cycle | connected
 
 ## Exemplos Selecionados
 
->Exemplo 1
+As linhas com " > " representam um possivel output instantâneo de um programa rodando a linguagem TAGAS
+
+- **Exemplo 1**
 ```
 define A1 A2 A3
 define A1>A2 A2>A3
@@ -73,7 +77,7 @@ cycle
   > 2
 ```
 
->Exemplo 2
+- **Exemplo 2**
 ```
 define A1 A2 A3 A4
 define A1>A2 A2>A3
@@ -84,7 +88,7 @@ connected
   > True
 ```
 
-> Exemplo 3
+- **Exemplo 3**
 ```
 define A1 B2 C3
 define A1>B2 B2>C3
