@@ -35,13 +35,21 @@ remove: apaga N pontos ou arestas divididos por espaços.
 
 path: recebe como parâmetro pontos ou arestas e verifica se existe uma caminho que passa pelos elementos recebidos.
 
+parth_seq: recebe como parâmetro pontos ou arestas e verifica se existe uma caminho que passa pelos elementos recebidos, NA ORDEM em que foram escritos.
+
 cycle: retorna quantos ciclos existem no grafo.
 
 connected: retorna True se o grafo for conexo e False se não for.
 
-graph: printa o grafo.
+print: printa o grafo.
 
 matrix: printa o grafo na forma de matriz.
+
+graph_line: retorna a string de uma linha "define ..." que gera o grafo atual inteiro.
+
+exists: diz se um ou mais elementos (pontos ou arestas) existem.
+
+undo: desfaz o último comando que alterou o grafo.
 
 
 ## Gramática da Linguagem
@@ -49,27 +57,26 @@ matrix: printa o grafo na forma de matriz.
 ```
 # gramática core
 
-* p = [A-Z0-9_]+
-
-S::= define B | remove B
-B::= O | O B
-O::= p | A
-C::= p | [p P]
-P::= p | p P
-A::= C>C | C<>C | C>A | C<>A
-S::= path p PATH_ARGS
-S::= path_seq p PATH_ARGS
-S::= exists PATH_ARGS
-PATH_ARGS::= p | p>p | p<>p | p>PATH_ARGS | p<>PATH_ARGS
-S::= matrix | print | cycle | connected | graph_line
+START::= define MULTIPLE_ELEMENTS | remove MULTIPLE_ELEMENTS
+MULTIPLE_ELEMENTS::= ELEMENT | ELEMENT MULTIPLE_ELEMENTS
+ELEMENT::= POINT | EDGES_DECLARATION
+POINT::= [A-Z0-9_]+
+MULTIPLE_POINTS::= POINT | POINT MULTIPLE_POINTS
+EDGES_DECLARATION::= SET>SET | SET<>SET | C>EDGES_DECLARATION | C<>EDGES_DECLARATION
+SET::= POINT | [POINT MULTIPLE_POINTS]
+START::= path POINT MULTIPLE_PATH_ARGS
+START::= path_seq POINT MULTIPLE_PATH_ARGS
+START::= exists PATH_ARG
+MULTIPLE_PATH_ARGS::= PATH_ARGS | PATH_ARGS MULTIPLE_PATH_ARGS
+PATH_ARG::= POINT | POINT>POINT | POINT<>POINT | POINT>PATH_ARG | POINT<>PATH_ARG
+START::= matrix | print | cycle | connected | graph_line | undo
 
 
 
 # pré checagem por declaração de constante (inicia em CONST)
 
-* const = [a-z0-9_]+ (exceto palavras reservadas)
-
-CONST::= const: S | const: B
+CONST::= LABEL: START | LABEL: MULTIPLE_ELEMENTS
+LABEL = [a-z0-9_]+ (exceto palavras reservadas)
 (... core)
 ```
 
