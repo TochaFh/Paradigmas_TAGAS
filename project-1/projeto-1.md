@@ -53,7 +53,7 @@ matrix: printa o grafo na forma de matriz.
 
 S::= define B | remove B
 B::= O | O B
-O::= p | DA
+O::= p | A
 C::= p | [p P]
 P::= p | p P
 A::= C>C | C<>C | C>A | C<>A
