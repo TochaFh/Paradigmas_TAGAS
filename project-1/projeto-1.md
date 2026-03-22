@@ -47,15 +47,30 @@ matrix: printa o grafo na forma de matriz.
 ## Gramática da Linguagem
 
 ```
+# gramática core
+
 * p = [A-Z0-9_]+
 
-S::= define O | remove O
-O::= P | A
-P::= p | p P
-A::= p>p | p<>p | p>p A | p<>p A
-S::= path p B
+S::= define B | remove B
 B::= O | O B
-S::= matrix | graph | cycle | connected
+O::= p | DA
+C::= p | [p P]
+P::= p | p P
+A::= C>C | C<>C | C>A | C<>A
+S::= path p PATH_ARGS
+S::= path_seq p PATH_ARGS
+S::= exists PATH_ARGS
+PATH_ARGS::= p | p>p | p<>p | p>PATH_ARGS | p<>PATH_ARGS
+S::= matrix | print | cycle | connected | graph_line
+
+
+
+# pré checagem por declaração de constante (inicia em CONST)
+
+* const = [a-z0-9_]+ (exceto palavras reservadas)
+
+CONST::= const: S | const: B
+(... core)
 ```
 
 
@@ -102,3 +117,5 @@ matrix
 Thomas H. Cormen, Charles E. Leiserson, Ronald L. Rivest, and Cliﬀord Stein. Introduction to Algorithms. MIT Press, 4th edition, 2022.
 
 SANTOS, Rodrigo Pereira dos; COSTA, Heitor Augustus Xavier. Um software gráfico educacional para o ensino de algoritmos em grafos. Lavras: UFLA, 2006.
+
+GRAPHVIZ, disponível em [https://graphviz.org/](https://graphviz.org/)
