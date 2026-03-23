@@ -64,6 +64,24 @@ Demais comandos estão descritos na seção de palavras reservadas abaixo!
 
 <br />
 
+Labels de código: a linguagem TAGAS permite nomear linhas de código com **labels**!
+O funcionamento das labels (ou consts) é muito parecido com o "#define" da linguagem C e tem a estrutura usando dois pontos (':'):
+```
+nome_label_arbitrario: "qualquer linha de código ou elemento que passa na gramática core da linguagem TAGAS"
+```
+Exemplos do uso:
+```
+arvore_1: A>B>C   # definição de label
+define D E<>F arvore_1
+exists arvore_1
+  > True
+remove B>C
+exists arvore_1
+  > False
+```
+
+<br />
+
 **Palavras reservadas:**
 
 define: declara N pontos ou arestas divididos por espaços.
