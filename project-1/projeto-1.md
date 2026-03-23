@@ -72,12 +72,8 @@ nome_label_arbitrario: "qualquer linha de código ou elemento que passa na gram�
 Exemplos do uso:
 ```
 arvore_1: A>B>C   # definição de label
-define D E<>F arvore_1
-exists arvore_1
-  > True
-remove B>C
-exists arvore_1
-  > False
+conjunto_A: [A C E G]
+pesquisa: path_seq B D>E F
 ```
 
 <br />
@@ -199,6 +195,27 @@ graph_line
     > "define A1>A2>A3"
 exists A4
     > False
+```
+
+- **Exemplo 6**
+```
+arvore_1: A>B>C   # definição de label
+define D E<>F arvore_1
+exists arvore_1
+  > True
+remove B>C
+exists arvore_1
+  > False
+```
+
+- **Exemplo 7**
+```
+filhos: [MIKE DUSTIN LUCAS WILL]   # definição de label
+define PAI>filhos
+exists PAI>LUCAS
+  > True
+define MAE>filhos
+remove PAI>filhos
 ```
 
 # Referências Bibliográficas
