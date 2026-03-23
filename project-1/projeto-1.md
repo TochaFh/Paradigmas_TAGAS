@@ -27,24 +27,40 @@ Um ENCADEAMENTO de arestas é rotulado por vários pontos unidos por sinais de a
 
 Chamaremos de ELEMENTO SIMPLES qualquer sequência (única) que represente um PONTO, ARESTA ou ENCADEAMENTO simples, isto é, com as estruturas mostradas até agora, sem o uso de CONJUNTOS (que são explicados depois neste documento).
 
-Para criar pontos e arestas no grafo, utilizamos o comando 'define' seguido dos ELEMENTOS que queremos criar, separados por espaço. Exemplos:
+<br />
+
+Para **criar** pontos e arestas no grafo, utilizamos o comando '**define**' seguido dos ELEMENTOS que queremos criar, separados por espaço. Exemplos:
 ```
 define A B>C          # esta linha cria os pontos A, B e C no grafo, com uma aresta apontando de B para C.
 define A>B<>C>D<>E D>A   # esta linha cria os pontos e as arestas correspondentes (ligação bidirecional entre B e C etc)
 ```
-Para remover, utilizamos a mesma estrutura do 'define', só que com a palavra reservada 'remove'.
+Para **remover**, utilizamos a mesma estrutura do 'define', só que com a palavra reservada '**remove**'.
+
+<br />
 
 Um CONJUNTO de pontos é uma listagem de pontos definida por colchetes com os rótulos dos pontos separados por espaço dentro. Exemplos: [PONTO1 PONTO2 PONTO3 ...], [C3 A1 B7]
 
 Os conjuntos são uma poderosa ferramenta para a declaração de múltiplas arestas ligando pontos em comum. Substituindo um PONTO por um conjunto de pontos, declaramos arestas paralelamente entre os pontos nos conjuntos em questão.
 Exemplos:
 ```
-PONTO1>[PONTO2 PONTO3 PONTO4 ...]
-[PONTO1 PONTO2 PONTO3]>PONTO4
-[PONTO1 PONTO2]>[PONTO3 PONTO4]
-[PONTO1 PONTO2]<>[PONTO3 PONTO4]
+P1>[P2 P3 P4 ...]    # P1 apontando para P2, P3 e P4 (3 arestas sendo representadas por um único '>')
+[P1 P2 P3]>P4        # P1, P2 e P3 apontando para P4
+[P1 P2]>[P3 P4]      # Equivalente a:  P1>P3 P1>P4 P2>P3 P2>P4
+[P1 P2]<>[P3 P4]     # Equivalente a:  P1<>P3 P1<>P4 P2<>P3 P2<>P4   ou então   P1<>P3<>P2 P1<>P4<>P2
 ```
-Uma declaração como estas acima é chamada de ELEMENTO PODEROSO.
+Uma declaração como estas acima (que usa CONJUNTOS) é chamada de ELEMENTO PODEROSO.
+
+ELEMENTOS PODEROSOS **podem** ser usados (apenas) nos comandos **define** e **remove**.
+
+<br />
+
+Comandos de paths e 'exists':
+
+O comando '**path**' diz se existe caminho que passa (pelo menos uma vez) pelos ELEMENTOS SIMPLES especificados, ele não se importa com a ordem dos parâmetros e pode incluir outros elementos no caminho final. Já o '**path_seq**' faz quase a mesma coisa, só que ele se importa com que os elementos especificados apareçam no caminho final na mesma ordem em que foram especificados.
+
+O comando '**exists**' é muito mais específico. Ele diz se o único ELEMENTO SIMPLES especificado existe no grafo. Este elemento simples pode ser um encadeamento, portanto o comando '**exists**' pode ser usado para confirmar a existência de um caminho exato descrito por completo em forma de encadeamento.
+
+Demais comandos estão descritos na seção de palavras reservadas abaixo!
 
 <br />
 
@@ -54,9 +70,11 @@ define: declara N pontos ou arestas divididos por espaços.
 
 remove: apaga N pontos ou arestas divididos por espaços.
 
-path: recebe como parâmetro pontos ou arestas e verifica se existe uma caminho que passa pelos elementos recebidos.
+path: recebe como parâmetro pontos ou arestas e verifica se existe uma caminho que passa pelos ELEMENTOS SIMPLES recebidos.
 
-path_seq: recebe como parâmetro pontos ou arestas e verifica se existe uma caminho que passa pelos elementos recebidos, NA ORDEM em que foram escritos.
+path_seq: recebe como parâmetro pontos ou arestas e verifica se existe uma caminho que passa pelos ELEMENTOS SIMPLES recebidos, NA ORDEM em que foram escritos.
+
+exists: diz se UM ELEMENTO SIMPLES (ponto, aresta ou encadeamento de arestas) existe.
 
 cycle: retorna quantos ciclos existem no grafo.
 
@@ -67,8 +85,6 @@ print: printa o grafo.
 matrix: printa o grafo na forma de matriz.
 
 graph_line: retorna a string de uma linha "define ..." que gera o grafo atual inteiro.
-
-exists: diz se um elemento simples (ponto, aresta ou encadeamento de arestas) existe.
 
 undo: desfaz o último comando que alterou o grafo.
 
