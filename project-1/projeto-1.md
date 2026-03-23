@@ -35,7 +35,7 @@ remove: apaga N pontos ou arestas divididos por espaços.
 
 path: recebe como parâmetro pontos ou arestas e verifica se existe uma caminho que passa pelos elementos recebidos.
 
-parth_seq: recebe como parâmetro pontos ou arestas e verifica se existe uma caminho que passa pelos elementos recebidos, NA ORDEM em que foram escritos.
+path_seq: recebe como parâmetro pontos ou arestas e verifica se existe uma caminho que passa pelos elementos recebidos, NA ORDEM em que foram escritos.
 
 cycle: retorna quantos ciclos existem no grafo.
 
@@ -118,6 +118,33 @@ graph
 matrix
 ```
 
+- **Exemplo 4**
+```
+define A1 A2 A3 A4
+define A1>A2 A2>A3 A3>A4
+path A1 A4 A2>A3
+    > True
+path_seq A1 A4 A2>A3
+    > False
+path_seq A1 A2>A3 A4
+    > True
+```
+
+- **Exemplo 5**
+```
+define A1 A2 A3
+define A1>A2 A2>A3
+define A4 A3>A4
+graph_line
+    > "define A1 A2 A3 A4 A1>A2 A2>A3 A3>A4"
+exists A4
+    > True
+undo
+graph_line
+    > "define A1 A2 A3 A1>A2 A2>A3"
+exists A4
+    > False
+```
 
 # Referências Bibliográficas
 
