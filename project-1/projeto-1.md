@@ -37,7 +37,14 @@ Para remover, utilizamos a mesma estrutura do 'define', só que com a palavra re
 Um CONJUNTO de pontos é uma listagem de pontos definida por colchetes com os rótulos dos pontos separados por espaço dentro. Exemplos: [PONTO1 PONTO2 PONTO3 ...], [C3 A1 B7]
 
 Os conjuntos são uma poderosa ferramenta para a declaração de múltiplas arestas ligando pontos em comum. Substituindo um PONTO por um conjunto de pontos, declaramos arestas paralelamente entre os pontos nos conjuntos em questão.
-Exemplos: PONTO1>[PONTO2 PONTO3 PONTO4 ...], [PONTO1 PONTO2 PONTO3]>PONTO4, [PONTO1 PONTO2]>[PONTO3 PONTO4], [PONTO1 PONTO2]<>[PONTO3 PONTO4] etc. Uma declaração como estas é chamada de ELEMENTO PODEROSO.
+Exemplos:
+```
+PONTO1>[PONTO2 PONTO3 PONTO4 ...]
+[PONTO1 PONTO2 PONTO3]>PONTO4
+[PONTO1 PONTO2]>[PONTO3 PONTO4]
+[PONTO1 PONTO2]<>[PONTO3 PONTO4]
+```
+Uma declaração como estas acima é chamada de ELEMENTO PODEROSO.
 
 <br />
 
@@ -150,12 +157,12 @@ define A1 A2 A3
 define A1>A2 A2>A3
 define A4 A3>A4
 graph_line
-    > "define A1 A2 A3 A4 A1>A2 A2>A3 A3>A4"
+    > "define A1>A2>A3>A4"
 exists A4
     > True
 undo
 graph_line
-    > "define A1 A2 A3 A1>A2 A2>A3"
+    > "define A1>A2>A3"
 exists A4
     > False
 ```
