@@ -19,11 +19,25 @@
 
 ## Sintaxe da Linguagem na Forma de Tutorial
 
-**Formato:** 
+Um PONTO é rotulado por qualquer sequência envolvendo letras maiúsculas, dígitos ou "_". Exemplos: A1, C3, PO, PONTO_LEGAL, R2_D2, B7
 
-pontos: letras maiúsculas, dígitos ou "_"
+Uma ARESTA é rotulada por dois pontos unidos por um sinal de '>' (aresta unidirecional) ou '<>' (aresta bidirecional / duas arestas com sentidos opostos). Exemplos: A1>C3, PONTO_LEGAL<>R2_D2
 
-arestas: PONTO1>PONTO2 (aresta unidirecional) ou PONTO1<>PONTO2 (aresta bidirecional)
+Um ENCADEAMENTO de arestas é rotulado por vários pontos unidos por sinais de arestas ('<' ou '<>'). Exemplos: A1>PO<>C3, R2_D2>C3>PO>PONTO_LEGAL>A1
+
+Chamaremos de ELEMENTO SIMPLES qualquer sequência (única) que represente um PONTO, ARESTA ou ENCADEAMENTO simples, isto é, com as estruturas mostradas até agora, sem o uso de CONJUNTOS (que são explicados depois neste documento).
+
+Para criar pontos e arestas no grafo, utilizamos o comando 'define' seguido dos ELEMENTOS que queremos criar, separados por espaço. Exemplos:
+```
+define A B>C          # esta linha cria os pontos A, B e C no grafo, com uma aresta apontando de B para C.
+define A>B<>C>D<>E D>A   # esta linha cria os pontos e as arestas correspondentes (ligação bidirecional entre B e C etc)
+```
+Para remover, utilizamos a mesma estrutura do 'define', só que com a palavra reservada 'remove'.
+
+Um CONJUNTO de pontos é uma listagem de pontos definida por colchetes com os rótulos dos pontos separados por espaço dentro. Exemplos: [PONTO1 PONTO2 PONTO3 ...], [C3 A1 B7]
+
+Os conjuntos são uma poderosa ferramenta para a declaração de múltiplas arestas ligando pontos em comum. Substituindo um PONTO por um conjunto de pontos, declaramos arestas paralelamente entre os pontos nos conjuntos em questão.
+Exemplos: PONTO1>[PONTO2 PONTO3 PONTO4 ...], [PONTO1 PONTO2 PONTO3]>PONTO4, [PONTO1 PONTO2]>[PONTO3 PONTO4], [PONTO1 PONTO2]<>[PONTO3 PONTO4] etc. Uma declaração como estas é chamada de ELEMENTO PODEROSO.
 
 <br />
 
@@ -47,7 +61,7 @@ matrix: printa o grafo na forma de matriz.
 
 graph_line: retorna a string de uma linha "define ..." que gera o grafo atual inteiro.
 
-exists: diz se um ou mais elementos (pontos ou arestas) existem.
+exists: diz se um elemento simples (ponto, aresta ou encadeamento de arestas) existe.
 
 undo: desfaz o último comando que alterou o grafo.
 
