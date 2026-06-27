@@ -1,0 +1,18 @@
+(define (check_setup)
+    (display "O setup tagas NÃO FOI feito aqui!")
+    (newline)
+)
+
+(define (setup)
+    (current-prompt-read read)
+    (set! check_setup
+        (lambda ()
+            (display "O setup tagas já foi feito aqui!")
+            (newline)
+            (display "---- :D ----")
+            (newline)
+        )
+    )
+    (display "Setup tagas realizado com sucesso!")
+    (newline)
+)
