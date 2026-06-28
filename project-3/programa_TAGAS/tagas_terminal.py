@@ -12,6 +12,7 @@ def start_racket_process():
     Inicia o processo do Racket em background.
     """
     process = subprocess.Popen(
+        # TODO: Ajuste o caminho dos arquivos para contexto da localização do app
         ['racket', '-I', 'racket', '-f', 'scheme\\setup.rkt', '-f', 'scheme\\tagas.rkt', '-i'],
         stdin=subprocess.PIPE,
         stdout=subprocess.PIPE,
