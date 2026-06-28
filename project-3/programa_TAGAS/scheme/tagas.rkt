@@ -133,6 +133,10 @@
         ;; 1. Casos base de parada da recursão
         [ (add) (void) ]
 
+        ;; ERRO: checagem de sobra de operador
+        [ (add > resto ...) (display "[Warning] Operador '>' sobrando não causou efeito.\n") ]
+        [ (add <> resto ...) (display "[Warning] Operador '<>' sobrando não causou efeito.\n") ]
+
         ;; 2. PADRÃO: Unidirecional (>)   ex: (add A > B)
         [ (add origem > destino resto ...)
             (begin
