@@ -1,14 +1,45 @@
 import subprocess
 import sys
 import tagas_to_scheme as tagas
+import txt_colors as c
 
 END_MSG = "#&__FIM__&#"
 END_SETUP_MSG = "#&__END_SETUP__&#"
 
+def main():
+    global debug_mode
+    debug_mode = False
+
+    if ("--debug" in sys.argv):
+        debug_mode = True
+        print("Modo debug ativado.")
+        debug_log("Iniciando processo do Racket...")
+
+    scheme_process = start_racket_process()
+
+    print("------------------")
+    print("Bem-vindo ao terminal TAGAS!")
+    print("Digite 'exit' para sair.")
+    print("------------------")
+    
+    try:
+        main_loop(scheme_process)
+    except KeyboardInterrupt:
+        print("\nPrograma interrompido pelo usuário (Ctrl+C).")
+        
+    except Exception as e:
+        # Captura qualquer outro erro maluco que o seu código Python possa dar
+        print(f"\n[Erro Crítico]\n {e}\n\n____________")
+    finally:
+        scheme_process.stdin.close()
+        scheme_process.terminate()
+        print("Encerrando o programa...")
+        scheme_process.wait()
+
 def debug_log(msg):
     global debug_mode
     if debug_mode:
-        print("[DEBUG] :: ", msg)
+        print(f"{c.BLUE}[DEBUG] :: {msg}{c.RESET}")
 
 def start_racket_process():
     """
@@ -21,7 +52,8 @@ def start_racket_process():
         stdout=subprocess.PIPE,
         stderr=subprocess.STDOUT,
         text=True,
-        bufsize=1 
+        bufsize=1,
+        encoding='utf-8'
     )
 
     process.stdin.write('(setup)\n')
@@ -61,14 +93,14 @@ def main_loop(scheme_process):
         
         # interpretação TAGAS -> Scheme
         else:
-            scheme_command, must_run = tagas.tagas_to_scheme(tagas_line)
+            scheme_command, must_run, msgs = tagas.tagas_to_scheme(tagas_line)
+
+            for msg in msgs:
+                print_result(msg)
         
-            if not must_run:
+            if not must_run or scheme_command is None:
                 continue
-            if scheme_command is None:
-                print("[Erro] Sintaxe inválida. Motivo desconhecido.\n")
-                continue
-        
+            
         # linha completa que será enviada para o processo do Racket
         full_running_line = f"{scheme_command} (newline) (display \"{END_MSG}\") (newline) (flush-output)\n"
         
@@ -81,39 +113,21 @@ def main_loop(scheme_process):
             linha = scheme_process.stdout.readline()
             if END_MSG in linha:
                 break
-
+            
             # print linha:
-            print(f"-> {linha.strip()}")
+            print_result(linha)
+            
 
-def main():
-    global debug_mode
-    debug_mode = False
+def print_result(linha):
 
-    if ("--debug" in sys.argv):
-        debug_mode = True
-        print("Modo debug ativado.")
-        debug_log("Iniciando processo do Racket...")
-
-    scheme_process = start_racket_process()
-
-    print("------------------")
-    print("Bem-vindo ao terminal TAGAS!")
-    print("Digite 'exit' para sair.")
-    print("------------------")
-    
-    try:
-        main_loop(scheme_process)
-    except KeyboardInterrupt:
-        print("\nPrograma interrompido pelo usuário (Ctrl+C).")
-        
-    except Exception as e:
-        # Captura qualquer outro erro maluco que o seu código Python possa dar
-        print(f"\n[Erro Crítico]\n {e}\n\n____________")
-    finally:
-        scheme_process.stdin.close()
-        scheme_process.terminate()
-        print("Encerrando o programa...")
-        scheme_process.wait()
+    if "[DEBUG]" in linha:
+        debug_log(linha.replace("[DEBUG]", "").strip())
+    elif "[ERRO]" in linha:
+        print(f"{c.RED}{linha.strip()}{c.RESET}")
+    elif "[WARNING]" in linha:
+        print(f"{c.YELLOW}{linha.strip()}{c.RESET}")
+    else:
+        print(f"-> {linha.strip()}")
 
 if __name__ == "__main__":
     main()
