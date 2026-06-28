@@ -154,8 +154,9 @@
 
 ; TAGAS syntax
 
+; Dispatcher central
 (define-syntax execute
-  ;; Declaramos TODOS os comandos oficiais da TAGAS aqui
+  ;; TODOS os comandos oficiais da TAGAS aqui
   (syntax-rules (add print undo)
     
     ;; ---------------------------------------------------------
