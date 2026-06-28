@@ -212,7 +212,7 @@
         (begin
             (set! HISTORICO (cdr HISTORICO))
             (set! GRAFO (car HISTORICO))
-            (display "Última ALTERAÇÃO do grafo DESFEITA com sucesso!")
+            (display "Última ALTERAÇÃO do grafo DESFEITA!")
         )
     )
 )
@@ -224,12 +224,12 @@
 
 ; usado pela macro que relaciona diretamente o comando add da TAGAS
 (define (add-vertex! V)
-    (display "[DEBUG] Criando vértice ") (display V) (newline)
+    (display "[DEBUG] Criando vértice ") (display V) ;(newline)
     (set! GRAFO (add-vertex GRAFO V))
 )
 ; usado pela macro que relaciona diretamente o comando add da TAGAS
 (define (add-edge! V1 V2)
-    (display "[DEBUG] Criando aresta ") (display V1) (display ">") (display V2) (newline)
+    (display "[DEBUG] Criando aresta ") (display V1) (display ">") (display V2) ;(newline)
     (set! GRAFO (add-edge GRAFO V1 V2))
 )
 
@@ -244,12 +244,12 @@
 
 ; usado pela macro que relaciona diretamente o comando remove da TAGAS
 (define (remove-vertex! V)
-    (display "[DEBUG] Removendo vértice ") (display V) (newline)
+    (display "[DEBUG] Removendo vértice ") (display V) ;(newline)
     (set! GRAFO (remove-vertice GRAFO V))
 )
 ; usado pela macro que relaciona diretamente o comando remove da TAGAS
 (define (remove-edge! V1 V2)
-    (display "[DEBUG] Removendo aresta ") (display V1) (display ">") (display V2) (newline)
+    (display "[DEBUG] Removendo aresta ") (display V1) (display ">") (display V2) ;(newline)
     (set! GRAFO (remove-aresta GRAFO (list V1 V2)))
 )
 
