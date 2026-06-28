@@ -2,6 +2,9 @@ import subprocess
 import sys
 import tagas_to_scheme as tagas
 
+END_MSG = "#&__FIM__&#"
+END_SETUP_MSG = "#&__END_SETUP__&#"
+
 def debug_log(msg):
     global debug_mode
     if debug_mode:
@@ -20,15 +23,14 @@ def start_racket_process():
         text=True,
         bufsize=1 
     )
-    
-    end_steup_msg = "#&__END_SETUP__&#"
+
     process.stdin.write('(setup)\n')
-    process.stdin.write(f'(display "{end_steup_msg}") (newline)\n')
+    process.stdin.write(f'(display "{END_SETUP_MSG}") (newline)\n')
     process.stdin.flush()
 
     while True:
         linha = process.stdout.readline()
-        if end_steup_msg in linha:
+        if END_SETUP_MSG in linha:
             break
 
         debug_log(linha)
@@ -36,33 +38,48 @@ def start_racket_process():
     return process
 
 def main_loop(scheme_process):
+    global debug_mode
+
     while True:
         tagas_line = input("# ")
         
+        # ignora linha vazia
+        if tagas_line.strip() == "":
+            continue
+        
+        # comando exit
         if tagas_line.strip().lower() == "exit":
             print("-> Comando EXIT recebido.")
             break
-            
-        end_msg = "#&__FIM__&#"
-        scheme_command, must_run = tagas.tagas_to_scheme(tagas_line)
         
-        if not must_run:
-            continue
+        # comando principal que será rodado no scheme, não é para chegar até o final assim
+        scheme_command = "(display \"[ERRO] Comando não capturado pelo terminal!\")"
 
-        if scheme_command is None:
-            print("[Erro] Sintaxe inválida. Motivo desconhecido.\n")
-            continue
-
-        full_running_line = f"({scheme_command}) (newline) (display \"{end_msg}\") (newline) (flush-output)\n"
+        # modo debug, permite rodar comandos scheme cru
+        if debug_mode and tagas_line.strip().lower() == "scheme":
+            scheme_command = input("(SCHEME CRU) # ")
         
-        # Envia para o processo do Racket
+        # interpretação TAGAS -> Scheme
+        else:
+            scheme_command, must_run = tagas.tagas_to_scheme(tagas_line)
+        
+            if not must_run:
+                continue
+            if scheme_command is None:
+                print("[Erro] Sintaxe inválida. Motivo desconhecido.\n")
+                continue
+        
+        # linha completa que será enviada para o processo do Racket
+        full_running_line = f"{scheme_command} (newline) (display \"{END_MSG}\") (newline) (flush-output)\n"
+        
+        # envia para o processo do Racket
         scheme_process.stdin.write(full_running_line)
         scheme_process.stdin.flush() 
         
-        # Lê a e printa resposta
+        # lê a e printa resposta
         while True:
             linha = scheme_process.stdout.readline()
-            if end_msg in linha:
+            if END_MSG in linha:
                 break
 
             # print linha:

@@ -17,7 +17,9 @@ labels = {}
 
 def save_label(title, content):
     global labels
+    update = title in labels.keys()
     labels[title] = content
+    print(f"Label '{title}' {('atualizada.' if update else 'criada.')}")
 
 def replace_labels(line):
     global labels
@@ -56,7 +58,7 @@ def tagas_to_scheme(tagas_line):
     # lógica espaços
     c_line = process_spaces(c_line)
 
-    return c_line, True
+    return f"(execute {c_line})", True
 
 if __name__ == "__main__":
     main()

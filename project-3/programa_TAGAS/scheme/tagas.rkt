@@ -6,18 +6,15 @@
 (define graph-schema
     '((directed . 0) (weighted . 1) (direct-loop . 2) (body . 3))
 )
-
 (define (getp g p)
     (list-ref g (cdr (assq p graph-schema)))
 )
-
 (define (replace-by-i i value l)
     (if (= i 0)
         (cons value (cdr l))
         (cons (car l) (replace-by-i (- i 1) value (cdr l)))
     )
 )
-
 (define (setp g p value)
     (replace-by-i (cdr (assq p graph-schema)) value g)
 )
@@ -25,6 +22,7 @@
 
 ;; funções para o comando add
 
+; usado pela macro que relaciona diretamente o comando add da TAGAS
 (define (add-vertex grafo v)
     (let ((body (getp grafo 'body)))
         (if (assq v body)
@@ -34,6 +32,7 @@
     )
 )
 
+; possível utility - não está sendo usada pelas macros
 (define (add-vertexs grafo . vertexs)
     (if (null? vertexs)
         grafo
@@ -41,6 +40,7 @@
     )
 )
 
+; utility
 (define (replace-by-key key value l)
     (cond
         ((null? l)
@@ -52,6 +52,7 @@
     )
 )
 
+; utility
 ; apenas adiciona v2 na lista de adjacências de v1, sem se preocupar com o tipo do grafo
 ; e sem checar a existência de v1 e v2 antes (dá erro se v1 não existir)
 (define (add-adjacency grafo v1 v2)
@@ -68,6 +69,7 @@
 ; adiciona a aresta entre v1 e v2, checando o tipo do grafo
 ; se for não direcionado adiciona a adjacência v1-v2 e v2-v1
 ; cria os vértices v1 e/ou v2 caso não existam
+; usado pela macro que relaciona diretamente o comando add da TAGAS
 (define (add-edge grafo v1 v2)
     (let ((body (getp grafo 'body)))
         (if (assq v1 body)
@@ -86,6 +88,7 @@
 ; Função mais próxima do 'add', serve para criar vértices e arestas no grafo: add A>B B>C D>A
 ; se limitando somente pares
 ; exemplo: (add-edges grafo (A B) (B C) (C A))
+; possível utility - não está sendo usada pelas macros
 (define (add-edges grafo . edges)
     (if (null? edges)
         grafo
@@ -94,38 +97,108 @@
     )
 )
 
-
+(display "Biblioteca TAGAS carregada...\n")
 
 
 
 ; running logic
 
+; definição de estado inicial do grafo para a TAGAS
 ; (directed   (not) weighted   (not) direct-loop   body)
 (define GRAFO '(#t #f #f ()))
+(define HISTORICO '())
 
+; Salva o estado atual do grafo no histórico, concretizando uma alteração do grafo
+(define (GRAFO-to-historic!)
+    (set! HISTORICO (cons GRAFO HISTORICO))
+)
+
+; Desfaz a última alteração do grafo, restaurando o estado anterior do grafo no histórico
+(define (undo!)
+    (if (null? HISTORICO)
+        (display "[WARNING] Não há histórico para desfazer.")
+        (begin
+            (set! GRAFO (car HISTORICO))
+            (set! HISTORICO (cdr HISTORICO))
+            (display "Última ALTERAÇÃO do grafo DESFEITA com sucesso!\n")
+        )
+    )
+)
+
+; print direto da TAGAS
 (define (print)
     (display (getp GRAFO 'body))
 )
+
+; usado pela macro que relaciona diretamente o comando add da TAGAS
 (define (add-vertex! V)
     (set! GRAFO (add-vertex GRAFO V))
 )
-(define (add-vertexs! . vertexs)
-    (set! GRAFO (apply add-vertexs `(,GRAFO ,@vertexs)))
-)
+; usado pela macro que relaciona diretamente o comando add da TAGAS
 (define (add-edge! V1 V2)
     (set! GRAFO (add-edge GRAFO V1 V2))
 )
+
+; possível utility - não está sendo usada pelas macros
+(define (add-vertexs! . vertexs)
+    (set! GRAFO (apply add-vertexs `(,GRAFO ,@vertexs)))
+)
+; possível utility - não está sendo usada pelas macros
 (define (add-edges! . edges)
     (set! GRAFO (apply add-edges `(,GRAFO ,@edges)))
 )
 
-(display "tagas.rkt CARREGADO até o final!  :D\n")
-
-
+(display "Lógica de runtime TAGAS carregada...\n")
 
 
 
 ; TAGAS syntax
+
+(define-syntax execute
+  ;; Declaramos TODOS os comandos oficiais da TAGAS aqui
+  (syntax-rules (add print undo)
+    
+    ;; ---------------------------------------------------------
+    ;; Comandos Mutáveis (Precisam salvar histórico)
+    [ (execute add args ...)
+      (begin
+        (GRAFO-to-historic!)
+        (add args ...)
+        
+      )
+    ]
+    ;;; [ (execute remove args ...)
+    ;;;   (begin
+    ;;;     (GRAFO-to-historic!)
+    ;;;     (remove args ...) ; Supondo que você crie esse comando depois
+    ;;;   )
+    ;;; ]
+
+    ;; ---------------------------------------------------------
+    ;; Comandos Read-Only (Não sujam o histórico)
+    [ (execute print)
+      (print)
+    ]
+    [ (execute undo)
+      (undo!)
+    ]
+
+    ;; ---------------------------------------------------------
+    ;; Tratamento de erro (comando inexistente)
+    [ (execute print useless_args ...)
+      (display "[ERRO] O comando 'print' não aceita argumentos.")
+    ]
+    [ (execute undo useless_args ...)
+      (display "[ERRO] O comando 'undo' não aceita argumentos.")
+    ]
+    [ (execute unknown_word args ...)
+      (begin
+        (display "[ERRO] O comando '") (display 'unknown_word) 
+        (display "' não existe.\n")
+      )
+    ]
+  )
+)
 
 (define-syntax add
     ;; Declaramos o '<>' como uma palavra-chave oficial junto com o '>'
@@ -169,3 +242,7 @@
         ]
     )
 )
+
+
+(display "Macros de syntax TAGAS carregadas...\n")
+(display "tagas.rkt CARREGADO até o final!  :D\n")
