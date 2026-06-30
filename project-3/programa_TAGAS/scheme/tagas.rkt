@@ -197,10 +197,38 @@
 (define GRAFO '(#t #f #f ()))
 (define HISTORICO (list GRAFO))
 
+; print direto da TAGAS
+(define (print)
+    (display (getp GRAFO 'body))
+)
+
+(define DRAW-MODE #f)
+(define DRAW-MSG "")
+
+(define (set-draw-mode! bool msg)
+    (begin
+        (set! DRAW-MODE bool)
+        (set! DRAW-MSG msg)
+    )
+)
+
+(define (draw-update)
+    (if DRAW-MODE
+        (begin
+            (display DRAW-MSG)
+            (print)
+        )
+        (void)
+    )
+)
+
 ; Salva o estado atual do grafo no histórico, concretizando uma alteração do grafo
 (define (GRAFO-to-historic!)
     (if (not (equal? GRAFO (car HISTORICO)))
-        (set! HISTORICO (cons GRAFO HISTORICO))
+        (begin
+            (set! HISTORICO (cons GRAFO HISTORICO))
+            (draw-update)
+        )
         (void) ; Não adiciona ao histórico se não houve alteração no GRAFO
     )
 )
@@ -213,13 +241,9 @@
             (set! HISTORICO (cdr HISTORICO))
             (set! GRAFO (car HISTORICO))
             (display "Última ALTERAÇÃO do grafo DESFEITA!")
+            (draw-update)
         )
     )
-)
-
-; print direto da TAGAS
-(define (print)
-    (display (getp GRAFO 'body))
 )
 
 ; usado pela macro que relaciona diretamente o comando add da TAGAS
