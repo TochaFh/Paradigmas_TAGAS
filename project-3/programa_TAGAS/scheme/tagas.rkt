@@ -186,6 +186,59 @@
 ;;; )
 
 
+;; ---------------------------------------------------------------
+;; funções para os comandos path
+
+;; Retorna a lista contendo o caminho de 'origem' a 'destino', ou #f se não existir.
+(define (find-path grafo origem destino)
+(let ((corpo (getp grafo 'body)))
+    
+    ;; DFS interna que rastreia nós visitados para evitar loops
+    (define (dfs atual visitados)
+    (cond
+        ((eq? atual destino) (list destino)) ; Caso base: achou! Começa a montar a lista
+        ((memq atual visitados) #f)          ; Ciclo detectado: caminho inválido
+        (else
+        (let ((linha (assq atual corpo)))
+        (if (and linha (not (null? (cdr linha))))
+            ;; Loop manual para verificar qual vizinho retorna um caminho válido (não #f)
+            (let procurar-vizinho ((vizinhos (cdr linha)))
+                (cond
+                ((null? vizinhos) #f) ; Nenhum vizinho levou ao destino
+                (else
+                    (let ((caminho-subsequente (dfs (car vizinhos) (cons atual visitados))))
+                    (if caminho-subsequente
+                        ;; Se o vizinho achou uma rota, grudamos o nó atual na frente dela!
+                        (cons atual caminho-subsequente)
+                        ;; Senão, tenta o próximo vizinho da lista de adjacência
+                        (procurar-vizinho (cdr vizinhos)))))))
+            #f))))) ; Nó isolado ou sem saídas
+            
+    (dfs origem '())
+    )
+)
+
+;; Encontra o caminho completo que passa estritamente pela sequência fornecida
+(define (find-path-seq grafo sequencia)
+(cond
+    ;; Casos base
+    ((null? sequencia) '())
+    ((null? (cdr sequencia)) (list (car sequencia)))
+    
+    (else
+    (let ((primeiro-trecho (find-path grafo (car sequencia) (cadr sequencia))))
+    (if primeiro-trecho
+        (let ((resto-do-caminho (find-path-seq grafo (cdr sequencia))))
+            (if resto-do-caminho
+                ;; Junta os caminhos. O (cdr resto-do-caminho) evita duplicar o ponto de emenda
+                (append primeiro-trecho (cdr resto-do-caminho))
+                #f))
+        #f)))
+    )
+)
+
+
+
 (display "Biblioteca TAGAS carregada...\n")
 
 
@@ -217,6 +270,15 @@
         (begin
             (display DRAW-MSG)
             (print)
+        )
+        (void)
+    )
+)
+
+(define (draw-send-msg msg1 msg2)
+    (if DRAW-MODE
+        (begin
+            (display DRAW-MSG) (display msg1) (display msg2)
         )
         (void)
     )
@@ -277,6 +339,36 @@
     (set! GRAFO (remove-aresta GRAFO (list V1 V2)))
 )
 
+(define (path? origem destino)
+    (let ((caminho (find-path GRAFO origem destino)))
+        (if caminho
+            (begin
+                (display "Caminho encontrado: ")
+                (display caminho) (newline)
+                (draw-send-msg "[COLOR-PATH]" caminho)
+            )
+            (begin
+                (display "False - NÃO HÁ caminho de ") (display origem) (display " até ") (display destino)
+            )
+        )
+        (newline)
+    )
+)
+
+(define (path-seq? seq)
+    (let ((caminho (find-path-seq GRAFO seq)))
+        (if caminho
+            (begin
+                (display "Caminho encontrado: ")
+                (display caminho) (newline)
+                (draw-send-msg "[COLOR-PATH]" caminho)
+            )
+            (display "False - NÃO HÁ caminho que segue a sequência requisitada.")
+        )
+        (newline)
+    )
+)
+
 (display "Lógica de runtime TAGAS carregada...\n")
 
 
@@ -286,7 +378,7 @@
 ; Dispatcher central
 (define-syntax execute
   ;; TODOS os comandos oficiais da TAGAS aqui
-  (syntax-rules (add remove print undo)
+  (syntax-rules (add remove print undo path path-seq)
     
     ;; ---------------------------------------------------------
     ;; Comandos Mutáveis (Precisam salvar histórico)
@@ -302,14 +394,28 @@
         (GRAFO-to-historic!)
       )
     ]
+    [ (execute undo)
+      (undo!)
+    ]
 
     ;; ---------------------------------------------------------
     ;; Comandos Read-Only (Não sujam o histórico)
     [ (execute print)
       (print)
     ]
-    [ (execute undo)
-      (undo!)
+
+    [ (execute path origem destino)
+      (path? 'origem 'destino)
+    ]
+
+    [ (execute path-seq)
+      (display "[ERRO] O comando 'path-seq' precisa de pelo menos dois vértices como argumento.")
+    ]
+    [ (execute path-seq x)
+      (display "[ERRO] O comando 'path-seq' precisa de pelo menos dois vértices como argumento.")
+    ]
+    [ (execute path-seq vertices ...)
+      (path-seq? '(vertices ...))
     ]
 
     ;; ---------------------------------------------------------
@@ -319,6 +425,15 @@
     ]
     [ (execute undo useless_args ...)
       (display "[ERRO] O comando 'undo' não aceita argumentos.")
+    ]
+    [ (execute path)
+      (display "[ERRO] O comando 'path' precisa de DOIS argumentos (origem e destino do caminho).")
+    ]
+    [ (execute path x)
+      (display "[ERRO] O comando 'path' precisa de DOIS argumentos (origem e destino do caminho).")
+    ]
+    [ (execute path x ...)
+      (display "[ERRO] O comando 'path' aceita apenas DOIS argumentos (origem e destino do caminho).")
     ]
     [ (execute unknown_word args ...)
       (begin

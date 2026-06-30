@@ -20,11 +20,11 @@ def main():
         debug_log("Iniciando processo do Racket...")
 
     draw_queue = None
-    if ("--draw" in sys.argv or "-d" in sys.argv):
+    if ("--draw" in sys.argv):
         draw_mode = True
 
         draw_queue = multiprocessing.Queue()
-        draw_process = multiprocessing.Process(target=draw.run_drawer, args=(draw_queue, debug_log))
+        draw_process = multiprocessing.Process(target=draw.run_drawer, args=(draw_queue, debug_mode))
         draw_process.daemon = True
         draw_process.start()
 
