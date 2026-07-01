@@ -75,6 +75,7 @@ pesquisa: path-seq B D>E F
 
 ## Gramática da Linguagem
 
+```
 START ::= add MULTIPLE_ELEMENTS | remove MULTIPLE_ELEMENTS
 MULTIPLE_ELEMENTS ::= ELEMENT | ELEMENT MULTIPLE_ELEMENTS
 ELEMENT ::= VERTEX | EDGES_DECLARATION
@@ -90,10 +91,12 @@ PATH_ARG ::= VERTEX | VERTEX>VERTEX | VERTEX<>VERTEX | VERTEX>PATH_ARG | VERTEX<
 
 START ::= print | undo | exit
 
+
 # Pré-checagem por declaração de constante (Labels)
 
 CONST ::= LABEL: START | LABEL: MULTIPLE_ELEMENTS
 LABEL ::= [a-z0-9_]+ (exceto palavras reservadas)
+```
 
 ---
 
