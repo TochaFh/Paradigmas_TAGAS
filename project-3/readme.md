@@ -10,7 +10,7 @@ A principal motivação do projeto é o ambiente educativo. Como a Teoria dos Gr
 
 ## Slides
 
-[Link para o PDF da Apresentação Final](https://drive.google.com/file/d/1SFINYwWnTV1X1fZ4e3IoRCUgkoGGQLRK/view?usp=sharing)
+[Link para o PDF da Apresentação Final](pdef no drive)
 
 ## Sintaxe da Linguagem
 
