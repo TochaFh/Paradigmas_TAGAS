@@ -47,8 +47,8 @@ Uma declaração que usa conjuntos é chamada de **ELEMENTO PODEROSO**. Eles só
 
 ### Comandos de Caminhos (Paths) e Existência
 
-* **`path`**: Verifica se existe um caminho que passa (pelo menos uma vez) pelos elementos simples especificados. Ele não se importa com a ordem dos parâmetros e pode incluir outros vértices no caminho final.
-* **`path-seq`**: Funciona de forma parecida com o `path`, mas exige que os elementos especificados apareçam no caminho final **na mesma ordem** em que foram escritos.
+* **`path`**: Verifica se existe um caminho que vai de um vértice A até um B e retorna uma lista com o caminho, caso encontrado.
+* **`path-seq`**: Verifica se existe um caminho que passe por todos os n elementos especificados **na mesma ordem** em que foram escritos no comando. Também retorna um lista com o caminho encontrado.
 
 ---
 
