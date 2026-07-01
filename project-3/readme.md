@@ -67,7 +67,7 @@ pesquisa: path-seq B D>E F
 
 * **`add`**: Declara N vértices ou arestas separados por espaços.
 * **`remove`**: Apaga N vértices ou arestas separados por espaços.
-* **`path`**: Verifica se existe um caminho passando pelos elementos informados.
+* **`path`**: Verifica se existe um caminho de um vértice a outro.
 * **`path-seq`**: Verifica se existe um caminho passando pelos elementos informados na ordem exata.
 * **`print`**: Exibe a estrutura atual do grafo.
 * **`undo`**: Desfaz o último comando que alterou o grafo.
