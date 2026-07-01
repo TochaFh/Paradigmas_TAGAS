@@ -1,5 +1,6 @@
 import subprocess
 import sys
+from pathlib import Path
 import tagas_to_scheme as tagas
 import txt_colors as c
 import multiprocessing, queue, draw
@@ -7,6 +8,11 @@ import multiprocessing, queue, draw
 END_MSG = "#&__FIM__&#"
 END_SETUP_MSG = "#&__END_SETUP__&#"
 DRAW_MSG = "[#&__DRAW__&#]"
+
+BASE_DIR = Path(__file__).resolve().parent
+SCHEME_DIR = BASE_DIR / "scheme"
+SETUP_RKT = SCHEME_DIR / "setup.rkt"
+TAGAS_RKT = SCHEME_DIR / "tagas.rkt"
 
 debug_mode = False
 draw_mode = False
@@ -74,8 +80,7 @@ def start_racket_process():
     global draw_mode
 
     process = subprocess.Popen(
-        # TODO: Ajuste o caminho dos arquivos para contexto da localização do app
-        ['racket', '-I', 'racket', '-f', 'scheme\\setup.rkt', '-f', 'scheme\\tagas.rkt', '-i'],
+        ['racket', '-I', 'racket', '-f', str(SETUP_RKT), '-f', str(TAGAS_RKT), '-i'],
         stdin=subprocess.PIPE,
         stdout=subprocess.PIPE,
         stderr=subprocess.STDOUT,
